@@ -10,6 +10,8 @@ on the rells available if a word exists on database is not tried before and at l
 showed on the reels you need to move the reel foward and if the next letter is a match you should compute it as well.
 
 Trie structure
+
+
 the words used and stored on the resources should be stored on memory and be inseted, searched and removed inside a tree trie data strucure.
 
 Enjoy. 

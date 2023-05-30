@@ -15,7 +15,7 @@ namespace RWS.WordsSlotMachine.Presentation
             IGameDataRepository gameData = new GameDataRepository();
             IScoreManager scoreManager = new ScoreManager(gameData.GetScores());            
             IReelsManager reelsManager = new ReelsManager(gameData.GetReels());
-            IWordsTree trie = new Trie();
+            IWordsTree trie = new WordsTree();
             IWordsTree wordsTree = gameData.GetWords();
             gamePlayMachine = new GamePlayMachineService(reelsManager, scoreManager, wordsTree, trie);
            

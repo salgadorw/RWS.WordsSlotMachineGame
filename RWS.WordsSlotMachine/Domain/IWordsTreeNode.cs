@@ -6,7 +6,7 @@ namespace RWS.WordsSlotMachine.Domain
     {
         char Letter { get; set; }
         IWordsTreeNode NextLetterWord { get; set; }
-        List<IWordsTreeNode> NextWordsLetters { get; set; }
+        Dictionary<char,IWordsTreeNode> NextWordsLetters { get; set; }
         IWordsTreeNode PreviousLetterNode { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace RWS.WordsSlotMachine.Infrastructure
         private List<string> reels;
         private List<string> scores;
 
+        public List<string> Words { get { return words; } }
         private static List<string> ReadFile(string path)
         {
             return File.ReadAllLines($"{Directory.GetCurrentDirectory()}{path}").Select(s => s.ToUpper()).ToList();

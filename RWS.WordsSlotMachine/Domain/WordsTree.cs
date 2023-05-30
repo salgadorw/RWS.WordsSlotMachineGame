@@ -1,4 +1,5 @@
 ﻿using RWS.WordsSlotMachine.CrossCutting;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RWS.WordsSlotMachine.Domain
@@ -33,7 +34,7 @@ namespace RWS.WordsSlotMachine.Domain
                 else
                 {
                     var i = index;
-                    var nextForkNode = searchCursor.NextWordsLetters.Where(w => w.Letter.Equals(s[i])).FirstOrDefault();
+                    var nextForkNode = searchCursor.NextWordsLetters.GetValueOrDefault(s[i]);
 
                     if (nextForkNode == null)
                         return searchCursor;
@@ -44,7 +45,7 @@ namespace RWS.WordsSlotMachine.Domain
             } while (index < s.Length);
 
             return searchCursor.NextLetterWord.Letter == END_WORD ? searchCursor.NextLetterWord :
-                searchCursor.NextWordsLetters.Where(w => w.Letter == END_WORD).FirstOrDefault()
+                searchCursor.NextWordsLetters.GetValueOrDefault(END_WORD)
                 ?? searchCursor;
         }
 
@@ -60,7 +61,7 @@ namespace RWS.WordsSlotMachine.Domain
                 if (s.Length > index)
                     newNode.Letter = s[index];
 
-                insertCursor.NextWordsLetters.Add(newNode);
+                insertCursor.NextWordsLetters.Add(newNode.Letter,newNode);
                 insertCursor = newNode;
 
                 for (var i = ++index; i < s.Length; i++)
@@ -87,7 +88,8 @@ namespace RWS.WordsSlotMachine.Domain
                     lastNode = previousNode;
 
                 } while (lastNode.NextWordsLetters.Count == 0 || (lastNode.NextLetterWord.Letter == 0 && lastNode.PreviousLetterNode != null));
-                lastNode.NextWordsLetters.Remove(nextWordLetterNode);
+
+                lastNode.NextWordsLetters.Remove(nextWordLetterNode.Letter);
                 if (lastNode.NextLetterWord == nextWordLetterNode)
                 {
                     lastNode.NextLetterWord = WordsTreeNode.BuidNewNode();

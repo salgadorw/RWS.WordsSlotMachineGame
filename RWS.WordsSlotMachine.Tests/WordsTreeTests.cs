@@ -1,4 +1,5 @@
 ﻿using RWS.WordsSlotMachine.Domain;
+using RWS.WordsSlotMachine.Infrastructure;
 using Xunit;
 
 namespace RWS.WordsSlotMachine.Tests
@@ -11,6 +12,8 @@ namespace RWS.WordsSlotMachine.Tests
         private const string TEST_WORD5 = "aapparaaloel";
         private const string TEST_WORD3 = "aaparaalolel";
         private const string TEST_WORD4 = "baparaallel";
+
+        private readonly IGameDataRepository gameDataRepository = new GameDataRepository();
 
         [Fact]
         public void WordTreeInsertTest()
@@ -42,7 +45,7 @@ namespace RWS.WordsSlotMachine.Tests
             wordsTree.Insert(TEST_WORD4);
             wordsTree.Insert(TEST_WORD5);
 
-            Assert.True(wordsTree.Search(TEST_WORD));           
+            Assert.True(wordsTree.Search(TEST_WORD));
             Assert.True(wordsTree.Search(TEST_WORD2));
             Assert.True(wordsTree.Search(TEST_WORD3));
             Assert.True(wordsTree.Search(TEST_WORD4));
@@ -51,7 +54,7 @@ namespace RWS.WordsSlotMachine.Tests
             wordsTree.Delete(TEST_WORD4);
             wordsTree.Delete(TEST_WORD2);
             wordsTree.Delete(TEST_WORD3);
-            
+
             Assert.False(wordsTree.Search(TEST_WORD4));
             Assert.False(wordsTree.Search(TEST_WORD3));
             Assert.False(wordsTree.Search(TEST_WORD2));
@@ -64,6 +67,17 @@ namespace RWS.WordsSlotMachine.Tests
             Assert.False(wordsTree.Search(TEST_WORD1));
             Assert.False(wordsTree.Search(TEST_WORD5));
 
+            Assert.Equal(0, wordsTree.GetWordsTreeNodes.NextLetterWord.Letter);
+            Assert.Empty(wordsTree.GetWordsTreeNodes.NextWordsLetters);
+        }
+
+        [Fact]
+        public void WordTreeDelete_ALL_Test()
+        {
+            IWordsTree wordsTree = gameDataRepository.GetWords();
+            var words = gameDataRepository.Words;
+
+            words.ForEach(w => wordsTree.Delete(w));
             Assert.Equal(0, wordsTree.GetWordsTreeNodes.NextLetterWord.Letter);
             Assert.Empty(wordsTree.GetWordsTreeNodes.NextWordsLetters);
         }
